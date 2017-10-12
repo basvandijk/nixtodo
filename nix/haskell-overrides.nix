@@ -1,3 +1,6 @@
+# This Nix expression describes how we override and extend the Haskell packages
+# from <nixpkgs>.
+
 pkgs : {
 
   overrides = self: super:
