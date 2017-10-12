@@ -1,0 +1,29 @@
+name:                nixtodo-frontend
+version:             0.1.0.0
+synopsis:            GHCJS TODO-list frontend web-app
+homepage:            https://github.com/basvandijk/nix-workshop
+license:             BSD3
+author:              Bas van Dijk
+maintainer:          v.dijk.bas@gmail.com
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+cabal-version:       >=1.10
+
+executable nixtodo-frontend
+  main-is:             nixtodo-frontend.hs
+  hs-source-dirs:      src
+  other-modules:       Servant.Client.Ghcjs.Extended
+  build-depends:       base
+                     , containers
+                     , miso
+                     , aeson
+                     , ghcjs-base
+                     , lens
+                     , mtl
+                     , text
+                     , transformers
+                     , nixtodo-api-client
+                     , nixtodo-api
+                     , servant-client-ghcjs
+                     , ghcjs-dom-jsffi
+  default-language:    Haskell2010

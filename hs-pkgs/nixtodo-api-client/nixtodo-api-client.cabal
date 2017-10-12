@@ -1,0 +1,19 @@
+name:                nixtodo-api-client
+version:             0.1.0.0
+synopsis:            TODO-list API
+homepage:            https://github.com/basvandijk/nix-workshop
+license:             BSD3
+author:              Bas van Dijk
+maintainer:          v.dijk.bas@gmail.com
+build-type:          Simple
+extra-source-files:  ChangeLog.md
+cabal-version:       >=1.10
+
+library
+  build-depends:       base
+                     , nixtodo-api
+                     , servant
+                     , servant-client-core
+  default-language:    Haskell2010
+  exposed-modules: Nixtodo.Api.Client
+  hs-source-dirs: src
