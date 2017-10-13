@@ -1,3 +1,6 @@
+# A declarative hydra jobset specification.
+# See https://github.com/NixOS/hydra/blob/master/doc/manual/declarative-projects.xml
+
 { nixpkgs, declInput }: let pkgs = import nixpkgs {}; in {
   jobsets = pkgs.runCommand "spec.json" {} ''
     cat <<EOF
