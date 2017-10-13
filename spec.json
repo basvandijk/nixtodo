@@ -7,6 +7,7 @@
     "checkinterval"    : 300,
     "schedulingshares" : 100,
     "enableemail"      : false,
+    "emailoverride"    : "",
     "keepnr"           : 1,
     "inputs": {
         "nixpkgs": { "type": "git", "value": "git@github.com:NixOS/nixpkgs-channels.git nixos-17.09-small", "emailresponsible": false },
