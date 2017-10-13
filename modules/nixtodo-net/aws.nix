@@ -33,9 +33,9 @@ in rec {
       targetEnv = "ec2";
       ec2 = {
         inherit region accessKeyId;
-        instanceType = "t2.medium";
+        instanceType = "t2.xlarge";
 
-        ebsInitialRootDiskSize = 10; # GB
+        ebsInitialRootDiskSize = 20; # GB
 
         keyPair     = resources.ec2KeyPairs.todo-list-app-key-pair;
         elasticIPv4 = resources.elasticIPs.nixtodo-support-elastic-ip;
