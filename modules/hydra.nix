@@ -1,3 +1,16 @@
+# This module:
+#
+# * enables the hydra Continuous Integration server. This CI server periodically
+#   pulls our git repo and builds all the jobs defined in <nixtodo/release.nix>.
+#
+# * enables the nix-serve daemon which serves a binary cache of the build
+#   artefacts that hydra produces. This cache can be used by our engineers so
+#   they don't have to build as much on their local workstations.
+#
+# * configures a nginx reverse proxy server that provides TLS termination and
+#   proxies hydra.nixtodo.com and cache.nixtodo.com to hydra and nix-serve
+#   respectively.
+
 { pkgs, config, lib, ... }:
 
 with lib;
@@ -37,26 +50,20 @@ in {
         pair should be uploaded to GitHub to ensure hydra can clone repos.
       '';
     };
+
+    secretKeyFile = mkOption {
+      type = types.str;
+      default = toString (pkgs.writeTextFile {
+        name = "cache.nixtodo.com-secret-key";
+        text = fileContents <nixtodo/secrets/cache.nixtodo.com-secret-key>;
+      });
+      description = ''
+        Path to a file that contains the secret key for signing the binary cache.
+      '';
+    };
   };
 
   config = mkIf cfg.enable {
-
-    nix = {
-      buildMachines = [
-        { hostName = "localhost";
-          system = "x86_64-linux";
-          supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
-          maxJobs = 8;
-        }
-      ];
-    };
-
-    services.hydra = {
-      enable = true;
-      hydraURL = "https://${cfg.hostname}";
-      notificationSender = "hydra@nixtodo.com";
-      logo = <nixtodo/hs-pkgs/nixtodo-frontend/static/favicon.ico>;
-    };
 
     networking.firewall.allowedTCPPorts = [ 80 443 ];
 
@@ -70,6 +77,10 @@ in {
         "hydra" = {
           servers = { "127.0.0.1:${toString config.services.hydra.port}" = {}; };
         };
+        "nix-serve" = {
+          servers = { "127.0.0.1:${toString config.services.nix-serve.port}" = {}; };
+        };
+
       };
       virtualHosts = {
         "hydra.nixtodo.com" = {
@@ -77,12 +88,40 @@ in {
           forceSSL   = true;
           enableACME = true;
           locations = {
-            "/" = {
-              proxyPass = "http://hydra";
-            };
+            "/" = { proxyPass = "http://hydra"; };
+          };
+        };
+        "cache.nixtodo.com" = {
+          forceSSL   = true;
+          enableACME = true;
+          locations = {
+            "/" = { proxyPass = "http://nix-serve"; };
           };
         };
       };
+    };
+
+    services.hydra = {
+      enable = true;
+      hydraURL = "https://${cfg.hostname}";
+      notificationSender = "hydra@nixtodo.com";
+      logo = <nixtodo/hs-pkgs/nixtodo-frontend/static/favicon.ico>;
+    };
+
+    services.nix-serve = {
+      enable = true;
+      bindAddress = "127.0.0.1";
+      inherit (cfg) secretKeyFile;
+    };
+
+    nix = {
+      buildMachines = [
+        { hostName = "localhost";
+          system = "x86_64-linux";
+          supportedFeatures = ["kvm" "nixos-test" "big-parallel" "benchmark"];
+          maxJobs = 8;
+        }
+      ];
     };
 
     # Register GitHub's host key as a known host so that hydra can connect to
@@ -97,7 +136,7 @@ in {
 
     # Create a hydra admin user named "devops" and copy the GitHub private SSH
     # key to hydra's home directory so that it can connect to GitHub to clone
-    # our repo's.
+    # our repo's (this is only needed for private repos).
     systemd.services.lumi-hydra-setup = {
       wantedBy = [ "multi-user.target" ];
       requires = [ "hydra-init.service" "postgresql.service" ];

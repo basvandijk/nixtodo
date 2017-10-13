@@ -82,6 +82,9 @@ secrets/dhparams.pem:
 secrets/hydra-github.id_rsa:
 	ssh-keygen -C hydra-github -P "" -f $@
 
+secrets/cache.nixtodo.com-secret-key:
+	nix-store --generate-binary-cache-key cache.nixtodo.com-1 \
+	  $@ modules/cache.nixtodo.com-public-key
 
 ################################################################################
 # Deploying to containers for testing
