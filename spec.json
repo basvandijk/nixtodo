@@ -1,0 +1,15 @@
+{
+    "enabled"          : 1,
+    "hidden"           : false,
+    "description"      : "Jobsets",
+    "nixexprinput"     : "nixtodo",
+    "nixexprpath"      : "jobset.nix",
+    "checkinterval"    : 300,
+    "schedulingshares" : 100,
+    "enableemail"      : false,
+    "keepnr"           : 1,
+    "inputs": {
+        "nixpkgs": { "type": "git", "value": "git@github.com:NixOS/nixpkgs-channels.git nixos-17.09-small", "emailresponsible": false },
+        "nixtodo": { "type": "git", "value": "git@github.com:basvandijk/nixtodo.git master",                "emailresponsible": false }
+    }
+}
