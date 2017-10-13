@@ -33,7 +33,7 @@ in rec {
       targetEnv = "ec2";
       ec2 = {
         inherit region accessKeyId;
-        instanceType = "t2.xlarge";
+        instanceType = "t2.micro";
 
         ebsInitialRootDiskSize = 20; # GB
 
