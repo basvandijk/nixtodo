@@ -31,6 +31,9 @@ in {
 
   support =  {
     deployment.targetEnv = "container";
-    imports = [ (disableTLS "hydra.nixtodo.com") ];
+    imports = [
+      (disableTLS "hydra.nixtodo.com")
+      (disableTLS "cache.nixtodo.com")
+    ];
   };
 }
