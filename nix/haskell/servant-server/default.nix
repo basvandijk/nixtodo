@@ -6,13 +6,14 @@
 , should-not-typecheck, split, stdenv, string-conversions
 , system-filepath, tagged, temporary, text, transformers
 , transformers-base, transformers-compat, wai, wai-app-static
-, wai-extra, warp, word8, fetchgit
+, wai-extra, warp, word8, fetchFromGitHub
 }:
 mkDerivation {
   pname = "servant-server";
   version = "0.11";
-  src = (fetchgit {
-    url = "https://github.com/LumiGuide/servant.git";
+  src = (fetchFromGitHub {
+    owner = "LumiGuide";
+    repo = "servant";
     sha256 = "08b5z96v1b3izs2rd2fra35w03kb69wb9r68ia2r489kbynz19ch";
     rev = "ce355147d0bf3d1eefc1dc049f1cfa3f008d38c9";
   }) + "/servant-server";

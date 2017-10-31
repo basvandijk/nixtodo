@@ -1,13 +1,14 @@
 { mkDerivation, base, base-compat, base64-bytestring, bytestring
 , containers, deepseq, exceptions, generics-sop, hspec
 , http-api-data, http-media, http-types, mtl, network-uri
-, QuickCheck, safe, servant, stdenv, text, fetchgit
+, QuickCheck, safe, servant, stdenv, text, fetchFromGitHub
 }:
 mkDerivation {
   pname = "servant-client-core";
   version = "0.11";
-  src = (fetchgit {
-    url = "https://github.com/LumiGuide/servant.git";
+  src = (fetchFromGitHub {
+    owner = "LumiGuide";
+    repo = "servant";
     sha256 = "08b5z96v1b3izs2rd2fra35w03kb69wb9r68ia2r489kbynz19ch";
     rev = "ce355147d0bf3d1eefc1dc049f1cfa3f008d38c9";
   }) + "/servant-client-core";
