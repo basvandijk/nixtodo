@@ -1,3 +1,6 @@
+# This file defines the jobs that hydra.nixtodo.com should build.
+# The jobs currently consist of the nixtodo Haskell packages.
+
 let
   pkgs = import ./default.nix;
 in {
