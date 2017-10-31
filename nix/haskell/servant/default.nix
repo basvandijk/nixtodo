@@ -3,13 +3,14 @@
 , doctest, filemanip, filepath, hspec, http-api-data, http-media
 , http-types, mmorph, mtl, natural-transformation, network-uri
 , QuickCheck, quickcheck-instances, stdenv, string-conversions
-, tagged, text, url, vault, fetchgit
+, tagged, text, url, vault, fetchFromGitHub
 }:
 mkDerivation {
   pname = "servant";
   version = "0.11";
-  src = (fetchgit {
-    url = "https://github.com/LumiGuide/servant.git";
+  src = (fetchFromGitHub {
+    owner = "LumiGuide";
+    repo = "servant";
     sha256 = "08b5z96v1b3izs2rd2fra35w03kb69wb9r68ia2r489kbynz19ch";
     rev = "ce355147d0bf3d1eefc1dc049f1cfa3f008d38c9";
   }) + "/servant";
